@@ -1,1 +1,1 @@
-# ttySpeedTyping
+# tty-typing
