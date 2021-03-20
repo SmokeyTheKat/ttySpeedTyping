@@ -4,22 +4,28 @@
 #include <ddcColors.h>
 #include <ddcKeyboard.h>
 
+struct text
+{
+	char* title;
+	char* text;
+};
+
 #include "./texts.h"
 
-#define CGRAY "\x1b[38;2;100;100;100m"
+#define CGRAY "\x1b[38;2;120;120;120m"
 
-void run(char* text)
+void run(struct text text)
 {
 	cursor_clear();
 	cursor_home();
 	cursor_move(0,4);
 
-	ddPrintf(CGRAY"%s\r"CGRAY, text);
+	ddPrintf(CGRAY"%s\r"CGRAY, text.text);
 
 	char key = 1;
 	int pos = 0;
 
-	long textlen = cstring_length(text);
+	long textlen = cstring_length(text.text);
 
 	char* buf = malloc(textlen);
 	bool wrong = -1;
@@ -30,7 +36,7 @@ void run(char* text)
 		{
 			if (pos == 0) continue;
 			cursor_left();
-			ddPrintf(CGRAY"%c", text[pos-1]);
+			ddPrintf(CGRAY"%c", text.text[pos-1]);
 			cursor_left();
 			pos--;
 			if (pos == wrong)
@@ -39,12 +45,12 @@ void run(char* text)
 		}
 		if (pos == textlen) continue;
 		buf[pos] = key;
-		if (wrong != -1 || buf[pos] != text[pos])
+		if (wrong != -1 || buf[pos] != text.text[pos])
 		{
 			ddPrintf(CRED);
 			if (wrong == -1)
 				wrong = pos; 
-			if (text[pos] == ' ')
+			if (text.text[pos] == ' ')
 			{
 				ddPrints("\x1b[7m");
 			}
@@ -53,7 +59,7 @@ void run(char* text)
 		{
 			ddPrintf(CGREEN);
 		}
-		ddPrint_char(text[pos]);
+		ddPrint_char(text.text[pos]);
 		ddPrints("\x1b[0m");
 		pos++;
 		if (pos == textlen && wrong == -1)
@@ -67,9 +73,10 @@ void run(char* text)
 
 int main(void)
 {
+	srand(time(0));
 	while (1)
 	{
-		run(texts[(rand()%(sizeof(texts)/(sizeof(char*))))]);
+		run(texts[(rand()%(sizeof(texts)/(sizeof(struct text))))]);
 	}
 	return 0;
 }
