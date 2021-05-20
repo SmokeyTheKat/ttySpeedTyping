@@ -1,5 +1,6 @@
-all:
-	gcc ./tty-typing.c -o tty-typing -Wall -lX11
+PREFIX=~/.local
 
+all:
+	echo "run \"make install\" to install :)"
 install:
-	cp ./tty-typing /usr/bin/tty-typing
+	cp ./tty-typing $(PREFIX)/bin

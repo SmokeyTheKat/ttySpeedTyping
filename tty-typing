@@ -10,6 +10,15 @@ import lxml
 
 argv = sys.argv
 
+cmin = 150
+cmax = 300
+
+if len(argv) == 2:
+	cmin = int(argv[1])
+	cmax = 1000000000000000
+if len(argv) >= 3:
+	cmax = int(argv[2])
+
 height = os.get_terminal_size().lines
 width = os.get_terminal_size().columns
 
@@ -26,8 +35,9 @@ def get_text():
 		st = re.sub(r'\<[^<>]*\>', '', str(art[1]))
 		st = re.sub(r'\[[^\[\]]*\]', '', st)
 		st = re.sub(r'\([^\(\)]*\)', '', st)
-		if len(st) > 400:
-			return [str(title), str((st.strip().replace("  ", " ").replace(" , ", ", ")))]
+		st = str((st.strip().replace("  ", " ").replace(" , ", ", ")))
+		if len(st) > cmin and len(st) < cmax:
+			return [str(title), st]
 
 def flush():
 	sys.stdout.flush()
