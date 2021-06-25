@@ -35,7 +35,7 @@ def get_text():
 		st = re.sub(r'\<[^<>]*\>', '', str(art[1]))
 		st = re.sub(r'\[[^\[\]]*\]', '', st)
 		st = re.sub(r'\([^\(\)]*\)', '', st)
-		st = str((st.strip().replace("  ", " ").replace(" , ", ", ")))
+		st = str(st.strip().replace("  ", " ").replace(" , ", ", ").replace("  ", " "))
 		if len(st) > cmin and len(st) < cmax:
 			return [str(title), st]
 
